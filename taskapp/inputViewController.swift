@@ -32,6 +32,8 @@ class inputViewController: UIViewController {
     let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(dismissKeyboard))
     self.view.addGestureRecognizer(tapGesture)
     
+    
+    categoryText.text = task.category
     titleTextField.text = task.title
     contentsTextView.text = task.contents
     detePicker.date = task.date as Date

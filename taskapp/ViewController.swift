@@ -10,15 +10,25 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+  
+  
 
 
   @IBOutlet weak var tableView: UITableView!
   
+  @IBOutlet weak var search: UISearchBar!
   
   let realm = try! Realm()
   
-  let taskArray = try! Realm().objects(Task.self).sorted(byProperty: "date", ascending: false)
+  var category : Category!
+  
+  
+  var taskArray = try! Realm().objects(Task.self).sorted(byProperty: "date", ascending: false)
+  var wakaran = try! Realm().objects(Task.self).sorted(byProperty: "category", ascending: false)
+  
+  private var Search: UISearchBar!
+  var searchResult = [String]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -26,7 +36,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     tableView.delegate = self
     tableView.dataSource = self
+    search.delegate = self
+    search.enablesReturnKeyAutomatically = false
+    
   }
+  
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -107,9 +121,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
           print("---------------/")
   
   }
+  
+        
 
 
 }
 }
 }
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    if searchText.isEmpty {
+      taskArray = try! Realm().objects(Task.self).sorted(byProperty: "date", ascending: false)
+    } else {
+      let predicate = NSPredicate(format: "category == %@", searchText)
+      taskArray = try! Realm().objects(Task.self).filter(predicate).sorted(byProperty: "date", ascending: false)
+    }
+    self.tableView.reloadData()
+  }
+  
 }
