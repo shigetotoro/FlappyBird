@@ -351,7 +351,7 @@ class gameScene: SKScene, SKPhysicsContactDelegate {
         itemscoreLabelNode.text = "Item Score:\(itemscore)"
       
       var itembestscore = userDefaults.integer(forKey: "BESTITEM")
-      if score > itembestscore {
+      if itemscore > itembestscore {
         itembestscore = score
         bestitemscoreLabelNode.text = "best ItemScore:\(itembestscore)"
         userDefaults.set(itembestscore, forKey: "BESTITEM")
